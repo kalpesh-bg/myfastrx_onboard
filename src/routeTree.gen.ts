@@ -9,12 +9,12 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as Onboard_v3RouteImport } from './routes/onboard_v3'
+import { Route as OnboardRouteImport } from './routes/onboard'
 import { Route as IndexRouteImport } from './routes/index'
 
-const Onboard_v3Route = Onboard_v3RouteImport.update({
-  id: '/onboard_v3',
-  path: '/onboard_v3',
+const OnboardRoute = OnboardRouteImport.update({
+  id: '/onboard',
+  path: '/onboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -25,37 +25,37 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/onboard_v3': typeof Onboard_v3Route
+  '/onboard': typeof OnboardRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/onboard_v3': typeof Onboard_v3Route
+  '/onboard': typeof OnboardRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/onboard_v3': typeof Onboard_v3Route
+  '/onboard': typeof OnboardRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/onboard_v3'
+  fullPaths: '/' | '/onboard'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/onboard_v3'
-  id: '__root__' | '/' | '/onboard_v3'
+  to: '/' | '/onboard'
+  id: '__root__' | '/' | '/onboard'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  Onboard_v3Route: typeof Onboard_v3Route
+  OnboardRoute: typeof OnboardRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/onboard_v3': {
-      id: '/onboard_v3'
-      path: '/onboard_v3'
-      fullPath: '/onboard_v3'
-      preLoaderRoute: typeof Onboard_v3RouteImport
+    '/onboard': {
+      id: '/onboard'
+      path: '/onboard'
+      fullPath: '/onboard'
+      preLoaderRoute: typeof OnboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -70,7 +70,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  Onboard_v3Route: Onboard_v3Route,
+  OnboardRoute: OnboardRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

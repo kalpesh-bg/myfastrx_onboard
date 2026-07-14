@@ -1,7 +1,7 @@
-# Apache / cPanel SPA fallback for TanStack Router (subdir: /onboard_v3/)
+# Apache / cPanel SPA fallback for TanStack Router (subdir: /onboard/)
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteBase /onboard_v3/
+  RewriteBase /onboard/
 
   # Serve existing files and directories as-is
   RewriteCond %{REQUEST_FILENAME} -f [OR]

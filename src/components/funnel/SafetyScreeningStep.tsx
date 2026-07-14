@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { FunnelData, SAFETY_CONDITIONS } from '@/types/funnel';
 import { Check } from 'lucide-react';
+import SafetyIneligibilityView from './SafetyIneligibilityView';
+
+const isDisqualified = (conditions: string[]) =>
+  conditions.some((c) => c !== 'none');
 
 interface SafetyScreeningStepProps {
   data: FunnelData;
@@ -12,6 +16,7 @@ interface SafetyScreeningStepProps {
 
 const SafetyScreeningStep = ({ data, onUpdate, onNext, onBack, onFieldBlur }: SafetyScreeningStepProps) => {
   const [error, setError] = useState('');
+  const [showIneligibility, setShowIneligibility] = useState(false);
 
   const toggleCondition = (id: string) => {
     let newConditions: string[];
@@ -44,10 +49,24 @@ const SafetyScreeningStep = ({ data, onUpdate, onNext, onBack, onFieldBlur }: Sa
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (validate()) {
-      onNext();
+    if (!validate()) {
+      return;
     }
+    if (isDisqualified(data.safetyConditions)) {
+      setShowIneligibility(true);
+      return;
+    }
+    onNext();
   };
+
+  const handleReviewAnswers = () => {
+    setError('');
+    setShowIneligibility(false);
+  };
+
+  if (showIneligibility) {
+    return <SafetyIneligibilityView onReviewAnswers={handleReviewAnswers} />;
+  }
 
   return (
     <form onSubmit={handleSubmit} className="form-section">

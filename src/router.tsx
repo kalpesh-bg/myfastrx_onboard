@@ -7,7 +7,7 @@ export const getRouter = () => {
 
   const router = createRouter({
     routeTree,
-    basepath: "/onboard_v3",
+    basepath: "/onboard",
     context: { queryClient },
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,

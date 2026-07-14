@@ -48,13 +48,20 @@ const extractFieldValues = (data: FunnelData): FieldMap => {
   };
 };
 
-export const useLeadCapture = (data: FunnelData, marketingParams: MarketingParams, currentStep: number, udi?: string) => {
+export const useLeadCapture = (
+  data: FunnelData,
+  marketingParams: MarketingParams,
+  currentStep: number,
+  udi?: string,
+  options?: { sessionRestored?: boolean }
+) => {
   // Use object refs that we can mutate
   const lastSentValuesRef = useRef<FieldMap>({});
   const maxStepRef = useRef<number>(currentStep);
   const currentStepRef = useRef<number>(currentStep);
   const dataRef = useRef<FunnelData>(data);
   const marketingParamsRef = useRef<MarketingParams>(marketingParams);
+  const skipAutofillWebhooksRef = useRef<boolean>(options?.sessionRestored ?? false);
   // Use provided UDI or generate fresh one on every page refresh/reload
   const udiRef = useRef<string>(udi || generateUdi());
 
@@ -208,6 +215,13 @@ export const useLeadCapture = (data: FunnelData, marketingParams: MarketingParam
 
   // Detect autofilled values: Check after mount and when data changes
   useEffect(() => {
+    if (skipAutofillWebhooksRef.current) {
+      // Restored session: mark existing values as sent without re-firing webhooks
+      lastSentValuesRef.current = extractFieldValues(dataRef.current);
+      skipAutofillWebhooksRef.current = false;
+      return;
+    }
+
     // Check immediately when data changes (catches autofill that happens after mount)
     checkAndSendAutofilledFields();
 

@@ -25,6 +25,7 @@ export interface FunnelData {
 
   // Step 4: Treatment Selection
   selectedTreatment: 'semaglutide' | 'tirzepatide' | null;
+  selectedPlanId?: '1mo' | '3mo' | '6mo' | '12mo' | null;
 }
 
 export const initialFunnelData: FunnelData = {
@@ -47,6 +48,7 @@ export const initialFunnelData: FunnelData = {
   weight: '',
   safetyConditions: [],
   selectedTreatment: null,
+  selectedPlanId: null,
 };
 
 export const US_STATES = [

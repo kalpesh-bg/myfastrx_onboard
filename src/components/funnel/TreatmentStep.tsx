@@ -36,15 +36,15 @@ interface PlanDef {
 const PLANS: Record<Treatment, PlanDef[]> = {
   semaglutide: [
     { id: '1mo', label: 'Monthly Plan', months: 1, monthly: 69, total: 69, originalMonthly: 169, savings: 100, firstMonthOff: 100, ongoingMonthly: 169 },
-    { id: '3mo', label: '3 Month Plan', months: 3, monthly: 133, total: 399, savings: 108, badge: 'popular' },
-    { id: '6mo', label: '6 Month Plan', months: 6, monthly: 117, total: 699, savings: 315, delivered3mo: true },
-    { id: '12mo', label: '12 Month Plan', months: 12, monthly: 99, total: 1188, savings: 840, badge: 'best', delivered3mo: true },
+    { id: '3mo', label: '3 Month Plan', months: 3, monthly: 99, total: 297, savings: 210, badge: 'popular' },
+    { id: '6mo', label: '6 Month Plan', months: 6, monthly: 89, total: 534, savings: 480, delivered3mo: true },
+    { id: '12mo', label: '12 Month Plan', months: 12, monthly: 79, total: 948, savings: 1080, badge: 'best', delivered3mo: true },
   ],
   tirzepatide: [
     { id: '1mo', label: '1 Month Plan', months: 1, monthly: 149, total: 149, originalMonthly: 249, savings: 100, firstMonthOff: 100, ongoingMonthly: 249 },
-    { id: '3mo', label: '3 Month Plan', months: 3, monthly: 199, total: 597, savings: 150, badge: 'popular' },
-    { id: '6mo', label: '6 Month Plan', months: 6, monthly: 183, total: 1099, savings: 395, delivered3mo: true },
-    { id: '12mo', label: '12 Month Plan', months: 12, monthly: 149, total: 1788, savings: 1200, badge: 'best', delivered3mo: true },
+    { id: '3mo', label: '3 Month Plan', months: 3, monthly: 166, total: 498, savings: 249, badge: 'popular' },
+    { id: '6mo', label: '6 Month Plan', months: 6, monthly: 149, total: 894, savings: 600, delivered3mo: true },
+    { id: '12mo', label: '12 Month Plan', months: 12, monthly: 124, total: 1488, savings: 1500, badge: 'best', delivered3mo: true },
   ],
 };
 
@@ -78,14 +78,23 @@ interface TreatmentStepProps {
   onUpdate: (data: Partial<FunnelData>) => void;
   onComplete: () => void;
   onBack: () => void;
+  onBeforeCheckout: (updates: Partial<FunnelData>) => void;
   uniqueId: string;
   onFieldBlur?: (fieldName: string, fieldValue: string | boolean | number | string[] | null) => void;
 }
 
-const TreatmentStep = ({ data, onUpdate, onComplete, onBack, uniqueId, onFieldBlur }: TreatmentStepProps) => {
+const TreatmentStep = ({
+  data,
+  onUpdate,
+  onComplete,
+  onBack,
+  onBeforeCheckout,
+  uniqueId,
+  onFieldBlur,
+}: TreatmentStepProps) => {
   const { trackInitiateCheckout } = useAnalytics();
-  const [treatment, setTreatment] = useState<Treatment>('semaglutide');
-  const [planId, setPlanId] = useState<PlanId>('3mo');
+  const [treatment, setTreatment] = useState<Treatment>(data.selectedTreatment ?? 'semaglutide');
+  const [planId, setPlanId] = useState<PlanId>((data.selectedPlanId as PlanId) ?? '3mo');
   const [noteOpen, setNoteOpen] = useState(false);
 
   const plans = PLANS[treatment];
@@ -139,10 +148,22 @@ const TreatmentStep = ({ data, onUpdate, onComplete, onBack, uniqueId, onFieldBl
   };
 
   const handleCheckout = () => {
-    onUpdate({ selectedTreatment: treatment });
+    const updates = { selectedTreatment: treatment, selectedPlanId: planId };
+    onBeforeCheckout(updates);
     onFieldBlur?.('selectedTreatment', treatment);
     trackInitiateCheckout(treatment);
     window.location.href = buildCheckoutUrl();
+  };
+
+  const handleTreatmentChange = (nextTreatment: Treatment) => {
+    setTreatment(nextTreatment);
+    setPlanId('3mo');
+    onUpdate({ selectedTreatment: nextTreatment, selectedPlanId: '3mo' });
+  };
+
+  const handlePlanChange = (nextPlanId: PlanId) => {
+    setPlanId(nextPlanId);
+    onUpdate({ selectedPlanId: nextPlanId });
   };
 
   const trustBadges = [
@@ -155,7 +176,7 @@ const TreatmentStep = ({ data, onUpdate, onComplete, onBack, uniqueId, onFieldBl
   const bottle = treatment === 'semaglutide' ? semaglutideBottle : tirzepatideBottle;
 
   return (
-    <div className="w-full pb-40 md:pb-28">
+    <div className="w-full pb-56 md:pb-28">
       {/* Pre-approved pill */}
       <div className="flex justify-center mb-3">
         <div className="inline-flex items-center gap-2 bg-[#e1f8e8] text-green-700 px-4 py-1.5 rounded-[10px] text-xs md:text-sm font-medium">
@@ -167,12 +188,12 @@ const TreatmentStep = ({ data, onUpdate, onComplete, onBack, uniqueId, onFieldBl
       </div>
 
       {/* Doctor prescribed badge */}
-      <div className="flex justify-center mb-4">
+      {/* <div className="flex justify-center mb-4">
         <div className="inline-flex items-center gap-2 bg-blue-50 text-primary px-4 py-1.5 rounded-[10px] text-xs md:text-sm font-bold tracking-wide">
           <ShieldCheck className="w-4 h-4" />
           DOCTOR PRESCRIBED WEIGHT LOSS
         </div>
-      </div>
+      </div> */}
 
       {/* Headline */}
       <h1 className="text-center text-3xl md:text-5xl font-bold mb-2 leading-tight">
@@ -224,10 +245,7 @@ const TreatmentStep = ({ data, onUpdate, onComplete, onBack, uniqueId, onFieldBl
               <button
                 key={t}
                 type="button"
-                onClick={() => {
-                  setTreatment(t);
-                  setPlanId('3mo');
-                }}
+                onClick={() => handleTreatmentChange(t)}
                 className={`relative bg-white rounded-xl p-3 md:p-2 border-2 text-left transition-all ${
                   selected ? 'border-primary ring-2 ring-primary/20' : 'border-border'
                 }`}
@@ -261,8 +279,8 @@ const TreatmentStep = ({ data, onUpdate, onComplete, onBack, uniqueId, onFieldBl
           })}
         </div>
         <div className="flex items-center justify-center gap-4 mt-3 text-xs text-muted-foreground">
-          <span className="flex items-center font-semibold text-black gap-1.5 md:leading-[14px]"><span className="w-2 h-2 rounded-full bg-green-500" />Compounded</span>
-          <span className="flex items-center font-semibold text-black gap-1.5 md:leading-[14px]"><span className="w-2 h-2 rounded-full bg-green-500" />Doctor Prescribed</span>
+          <span className="flex items-center font-semibold text-black gap-1.5 md:leading-[14px]"><span className="w-2 h-2 rounded-full bg-blue-500" />Compounded</span>
+          <span className="flex items-center font-semibold text-black gap-1.5 md:leading-[14px]"><span className="w-2 h-2 rounded-full bg-blue-500" />Doctor Prescribed</span>
         </div>
       </div>
 
@@ -284,7 +302,7 @@ const TreatmentStep = ({ data, onUpdate, onComplete, onBack, uniqueId, onFieldBl
             <button
               key={plan.id}
               type="button"
-              onClick={() => setPlanId(plan.id)}
+              onClick={() => handlePlanChange(plan.id)}
               className={`relative text-left  rounded-xl border-1 px-2 py-3 md:px-2 transition-all flex flex-col ${
                 selected
                   ? 'border-primary bg-blue-50/40'
@@ -409,16 +427,6 @@ const TreatmentStep = ({ data, onUpdate, onComplete, onBack, uniqueId, onFieldBl
                 <div className="md:hidden block pr-[3rem] md:pr-0">
 
                   <div className="bg-[#e1f8e8] border border-green-100 rounded-[5px] px-3 py-2 text-center shrink-0 min-w-[68px]">
-                    {/* Show only for 3 month plan */}
-                  {plan.id === '1mo' && (
-                    <p className="text-[10px] text-primary font-semibold text-center mb-2">
-                      <span className="text-[10px] text-black font-medium leading-tight mb-1">Billed Today </span>
-                      
-                      <div className="font-bold text-green-700 text-xs md:text-sm">
-                      {fmt(billedAmount)}
-                    </div>
-                    </p>
-                  )}
                     <div className="text-[10px] text-black font-medium leading-tight mb-1">
                       Total Savings
                     </div>
@@ -429,17 +437,9 @@ const TreatmentStep = ({ data, onUpdate, onComplete, onBack, uniqueId, onFieldBl
                     {plan.id === '3mo' && (
                       <p className="text-[10px] text-primary font-semibold text-center mb-2">
                                             
-                      <div className="font-bold text-green-700 text-[9px] md:text-sm p-1 rounded-full bg-[#00800047] mt-1.5">
+                      {/* <div className="font-bold text-green-700 text-[9px] md:text-sm p-1 rounded-full bg-[#00800047] mt-1.5">
                       Best Value
-                      </div>
-                    </p>
-                  )}
-                  {plan.id === '12mo' && (
-                      <p className="text-[10px] text-primary font-semibold text-center mb-2">
-                                            
-                      <div className="font-bold text-green-700 text-[9px] md:text-sm p-1 rounded-full bg-[#00800047] mt-1.5">
-                      Best Savings
-                      </div>
+                      </div> */}
                     </p>
                   )}
                   </div>
@@ -467,7 +467,7 @@ const TreatmentStep = ({ data, onUpdate, onComplete, onBack, uniqueId, onFieldBl
       </div>
 
       {/* Dosage note */}
-      <div className="bg-blue-50/60 border border-blue-100 rounded-xl p-4 mb-0 md:mb-6">
+      <div className="bg-blue-50/60 border border-blue-100 rounded-xl p-4 mb-28 md:mb-6">
         <button
           type="button"
           onClick={() => setNoteOpen((v) => !v)}
@@ -489,14 +489,14 @@ const TreatmentStep = ({ data, onUpdate, onComplete, onBack, uniqueId, onFieldBl
         </button>
       </div>
 
-      {/* <div className="flex justify-center">
+      <div className="flex justify-center mb-28 md:mb-6">
         <button type="button" onClick={onBack} className="btn-secondary">
           Back
         </button>
-      </div> */}
+      </div>
 
       {/* Sticky checkout bar */}
-      <div className="fixed bottom-3 left-3 right-3 md:bottom-4 md:left-4 md:right-4 bg-white border border-border rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.12)] z-50">
+      <div className="fixed bottom-3 left-3 right-3 md:bottom-4 md:left-4 md:right-4 bg-white border border-border rounded-2xl shadow-[0_-6px_20px_rgba(0,0,0,0.1),0_-16px_48px_rgba(0,0,0,0.18)] z-50">
         <div className="max-w-[81rem] mx-auto px-3 py-5 md:px-0 !md:py-3">
           {/* Mobile layout */}
           <div className="md:hidden">
@@ -531,9 +531,9 @@ const TreatmentStep = ({ data, onUpdate, onComplete, onBack, uniqueId, onFieldBl
               <Lock className="w-4 h-4" />
               Continue Secure Checkout
             </button>
-            <p className="text-[10px] text-muted-foreground text-center mt-1 flex items-center justify-center gap-1">
+            {/* <p className="text-[10px] text-muted-foreground text-center mt-1 flex items-center justify-center gap-1">
               <ShieldCheck className="w-3 h-3" /> Secure 256-bit encrypted checkout
-            </p>
+            </p> */}
           </div>
 
           {/* Desktop layout */}
@@ -577,9 +577,9 @@ const TreatmentStep = ({ data, onUpdate, onComplete, onBack, uniqueId, onFieldBl
                 <Lock className="w-4 h-4" />
                 Continue Secure Checkout
               </button>
-              <p className="text-[10px] text-muted-foreground text-center mt-1 flex items-center justify-center gap-1 mt-2">
+              {/* <p className="text-[10px] text-muted-foreground text-center mt-1 flex items-center justify-center gap-1 mt-2">
                 <ShieldCheck className="w-3 h-3" /> Secure 256-bit encrypted checkout
-              </p>
+              </p> */}
             </div>
           </div>
         </div>

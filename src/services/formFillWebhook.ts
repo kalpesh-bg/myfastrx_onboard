@@ -37,6 +37,13 @@ export function getFormFillUnid(): string {
   return formFillUnid;
 }
 
+/** Restore a persisted form-fill unid (same session after refresh / checkout return). */
+export function restoreFormFillUnid(unid: string): void {
+  if (unid) {
+    formFillUnid = unid;
+  }
+}
+
 export type FormFillValue = string | boolean | number | string[] | null;
 
 function formatFormFillValue(value: FormFillValue): string {

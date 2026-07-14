@@ -12,16 +12,8 @@ const ProgressIndicator = ({ steps, currentStep }) => {
         <span>{Math.round((currentStep / steps.length) * 100)}% Complete</span>
       </div>
 
-      {/* Progress Bar */}
-      <div className="w-full bg-gray-200 h-2 rounded-full mb-4 md:mb-6">
-        <div
-          className="h-2 rounded-full bg-primary transition-all"
-          style={{ width: `${(currentStep / steps.length) * 100}%` }}
-        />
-      </div>
-
-      {/* Steps Circles */}
-      <div className="flex justify-center items-center gap-4">
+      {/* Steps Circles — above progress bar on mobile */}
+      <div className="flex justify-center items-center gap-4 mb-4">
         {steps.map((step, index) => {
           const stepNumber = index + 1;
 
@@ -42,6 +34,14 @@ const ProgressIndicator = ({ steps, currentStep }) => {
             </div>
           );
         })}
+      </div>
+
+      {/* Progress Bar — below circles on mobile */}
+      <div className="w-full bg-gray-200 h-2 rounded-full">
+        <div
+          className="h-2 rounded-full bg-primary transition-all"
+          style={{ width: `${(currentStep / steps.length) * 100}%` }}
+        />
       </div>
       </div>
       {/* dsktop */}

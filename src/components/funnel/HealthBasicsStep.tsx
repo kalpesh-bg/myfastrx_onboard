@@ -14,11 +14,27 @@ const HealthBasicsStep = ({ data, onUpdate, onNext, onBack, onFieldBlur }) => {
   const showBodyDetails =
     data.ageEligible === true && data.takingWeightLossMeds === false;
 
+  const clearAgeError = () => {
+    setErrors((prev) => {
+      if (!prev.age) return prev;
+      const { age: _age, ...rest } = prev;
+      return rest;
+    });
+  };
+
   const validate = () => {
     const newErrors: { age?: string; meds?: string; weight?: string; height?: string } = {};
 
     if (data.ageEligible === undefined) {
       newErrors.age = "Please select Yes or No";
+      setErrors(newErrors);
+      return false;
+    }
+
+    if (data.ageEligible === false) {
+      newErrors.age = "You must be between 18 and 80 years old to proceed.";
+      setErrors(newErrors);
+      return false;
     }
 
     if (data.takingWeightLossMeds == null) {
@@ -84,6 +100,7 @@ const HealthBasicsStep = ({ data, onUpdate, onNext, onBack, onFieldBlur }) => {
             onClick={() => {
               onUpdate({ ageEligible: true });
               onFieldBlur?.("ageEligible", true);
+              clearAgeError();
             }}
             className={`flex-1 py-4 rounded-xl border-2 text-lg font-semibold transition-all ${data.ageEligible === true
                 ? "bg-primary text-primary-foreground border-primary"
@@ -98,6 +115,7 @@ const HealthBasicsStep = ({ data, onUpdate, onNext, onBack, onFieldBlur }) => {
             onClick={() => {
               onUpdate({ ageEligible: false });
               onFieldBlur?.("ageEligible", false);
+              clearAgeError();
             }}
             className={`flex-1 py-4 rounded-xl border-2 text-lg font-semibold transition-all ${data.ageEligible === false
                 ? "bg-primary text-primary-foreground border-primary"
