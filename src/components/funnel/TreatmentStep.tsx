@@ -33,18 +33,20 @@ interface PlanDef {
   delivered3mo?: boolean;
 }
 
+const AUTO_COUPON_CODE = 'MY50';
+
 const PLANS: Record<Treatment, PlanDef[]> = {
   semaglutide: [
-    { id: '1mo', label: 'Monthly Plan', months: 1, monthly: 69, total: 69, originalMonthly: 169, savings: 100, firstMonthOff: 100, ongoingMonthly: 169 },
-    { id: '3mo', label: '3 Month Plan', months: 3, monthly: 99, total: 297, savings: 210, badge: 'popular' },
-    { id: '6mo', label: '6 Month Plan', months: 6, monthly: 89, total: 534, savings: 480, delivered3mo: true },
-    { id: '12mo', label: '12 Month Plan', months: 12, monthly: 79, total: 948, savings: 1080, badge: 'best', delivered3mo: true },
+    { id: '1mo', label: 'Monthly Plan', months: 1, monthly: 89, total: 89, savings: 50, firstMonthOff: 50, ongoingMonthly: 139 },
+    { id: '3mo', label: '3 Month Plan', months: 3, monthly: 99, total: 297, savings: 120, badge: 'popular' },
+    { id: '6mo', label: '6 Month Plan', months: 6, monthly: 89, total: 534, savings: 300, delivered3mo: true },
+    { id: '12mo', label: '12 Month Plan', months: 12, monthly: 79, total: 948, savings: 720, badge: 'best', delivered3mo: true },
   ],
   tirzepatide: [
-    { id: '1mo', label: '1 Month Plan', months: 1, monthly: 149, total: 149, originalMonthly: 249, savings: 100, firstMonthOff: 100, ongoingMonthly: 249 },
-    { id: '3mo', label: '3 Month Plan', months: 3, monthly: 166, total: 498, savings: 249, badge: 'popular' },
-    { id: '6mo', label: '6 Month Plan', months: 6, monthly: 149, total: 894, savings: 600, delivered3mo: true },
-    { id: '12mo', label: '12 Month Plan', months: 12, monthly: 124, total: 1488, savings: 1500, badge: 'best', delivered3mo: true },
+    { id: '1mo', label: '1 Month Plan', months: 1, monthly: 149, total: 149, savings: 50, firstMonthOff: 50, ongoingMonthly: 199 },
+    { id: '3mo', label: '3 Month Plan', months: 3, monthly: 166, total: 498, savings: 99, badge: 'popular' },
+    { id: '6mo', label: '6 Month Plan', months: 6, monthly: 149, total: 894, savings: 300, delivered3mo: true },
+    { id: '12mo', label: '12 Month Plan', months: 12, monthly: 124, total: 1488, savings: 900, badge: 'best', delivered3mo: true },
   ],
 };
 
@@ -126,6 +128,7 @@ const TreatmentStep = ({
     checkoutUrl.searchParams.set('planMonths', String(selectedPlan.months));
     checkoutUrl.searchParams.set('planTotal', String(selectedPlan.total));
     checkoutUrl.searchParams.set('planMonthly', String(selectedPlan.monthly));
+    checkoutUrl.searchParams.set('coupon_code', AUTO_COUPON_CODE);
 
     checkoutUrl.searchParams.set('state', enc(data.state));
     checkoutUrl.searchParams.set('firstName', enc(data.firstName));
@@ -342,16 +345,6 @@ const TreatmentStep = ({
                 <div>
                   <div className="flex items-start justify-between gap-2 mb-2 md:mb-3 pl-5">
                     <div className="flex items-baseline justify-between gap-2">
-      
-                      {/* Left side original price only for 1 month */}
-                      {plan.id === '1mo' && plan.originalMonthly ? (
-                        <span className="text-muted-foreground/70 line-through text-base md:text-2xl font-bold leading-none block">
-                          ${plan.originalMonthly}
-                        </span>
-                      ) : (
-                        <span className="block h-4" />
-                      )}
-
                       <div className="flex flex-col items-end">
                         <div className="flex items-baseline gap-0.5 flex-wrap">
                           <span
@@ -368,14 +361,7 @@ const TreatmentStep = ({
                     </div>
                   </div>
 
-                  {/* Other plans original price below /mo */}
-                        {plan.id !== '1mo' && plan.originalMonthly && (
-                          <span className="text-xs text-muted-foreground/70 line-through pl-5">
-                            ${plan.originalMonthly}/mo
-                          </span>
-                        )}
-
-                  {/* Row 3: deal info or totals — flex-1 keeps Billed Today anchored below */}
+                  {/* Row 3: deal info or totals */}
                   <div className='flex items-center md:pr-2'>
                     <div className="flex flex-col flex-1 justify-between  pl-5">
                       <div>
@@ -385,8 +371,7 @@ const TreatmentStep = ({
                               ${plan.firstMonthOff} OFF YOUR FIRST MONTH
                             </span>
                             <div className='flex justify-between md:mb-3 mb-2'>
-                              <p className="text-[10px] md:text-xs text-muted-foreground">Then ${plan.ongoingMonthly}/month thereafter</p>
-                              
+                              <p className="text-[10px] md:text-xs text-muted-foreground">Regular Price: ${plan.ongoingMonthly}/month</p>
                             </div>
                           </>
                         ) : (
@@ -394,17 +379,17 @@ const TreatmentStep = ({
                             <p className="text-[10px] md:text-xs text-muted-foreground">
                               ${plan.total.toLocaleString()} Total {plan.months} Months
                             </p>
-                            
                           </div>
                         )}
                       </div>
 
-                      <div>
-                        <p className="text-[10px] md:text-xs text-primary font-semibold ">
-                          <span className="">Billed Today</span> {fmt(billedAmount)}
-                        </p>
-                        
-                      </div>
+                      {!isFirstMonthDeal && (
+                        <div>
+                          <p className="text-[10px] md:text-xs text-primary font-semibold ">
+                            <span className="">Billed Today</span> {fmt(billedAmount)}
+                          </p>
+                        </div>
+                      )}
                       
                     </div>
                     <div className='hidden md:block'>

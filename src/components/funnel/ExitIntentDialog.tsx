@@ -85,7 +85,7 @@ const ExitIntentDialog = ({ isComplete }: ExitIntentDialogProps) => {
             </p>
             <div className="bg-primary/10 border-2 border-primary border-dashed rounded-lg py-4 px-6">
               <span className="text-2xl font-bold text-primary tracking-wider">
-                SAVE70
+                MY50
               </span>
             </div>
             <p className="text-sm text-muted-foreground">
@@ -104,7 +104,7 @@ const ExitIntentDialog = ({ isComplete }: ExitIntentDialogProps) => {
             onClick={handleStay}
             className="w-full sm:w-auto order-1 sm:order-2 bg-primary hover:bg-primary/90"
           >
-            Continue & Save $70
+            Continue & Save $50
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
