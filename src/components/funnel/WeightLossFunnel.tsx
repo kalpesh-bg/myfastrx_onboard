@@ -238,7 +238,7 @@ const WeightLossFunnel = () => {
   return (
     <>
       {/* <ExitIntentDialog isComplete={isComplete} /> */}
-      <div className="funnel-container bg-[#f0f8ff45]">
+      <div className="funnel-container bg-sky-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-6 md:mb-8">
             <img src={logoImage} alt="MyFastRx" className="h-12 md:h-20 mx-auto" />
