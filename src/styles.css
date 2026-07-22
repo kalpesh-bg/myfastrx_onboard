@@ -1,0 +1,162 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-sidebar: hsl(var(--sidebar-background));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+}
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+  --primary: 217 91% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 210 40% 96%;
+  --secondary-foreground: 222 47% 11%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 210 40% 96%;
+  --accent-foreground: 222 47% 11%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 217 91% 60%;
+  --radius: 0.5rem;
+  --step-active: 217 91% 60%;
+  --step-inactive: 210 40% 96%;
+  --step-completed: 217 91% 60%;
+  --step-line: 214 32% 91%;
+  --error: 0 84% 60%;
+  --success: 142 71% 45%;
+  --treatment-bg: 210 100% 97%;
+  --treatment-border: 217 91% 60%;
+  --sidebar-background: 0 0% 100%;
+  --sidebar-foreground: 222 47% 11%;
+  --sidebar-primary: 217 91% 60%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 210 40% 96%;
+  --sidebar-accent-foreground: 222 47% 11%;
+  --sidebar-border: 214 32% 91%;
+  --sidebar-ring: 217 91% 60%;
+}
+
+.dark {
+  --background: 222 84% 5%;
+  --foreground: 210 40% 98%;
+  --card: 222 84% 5%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222 84% 5%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 217 91% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 217 33% 18%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217 33% 18%;
+  --muted-foreground: 215 20% 65%;
+  --accent: 217 33% 18%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 63% 31%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217 33% 18%;
+  --input: 217 33% 18%;
+  --ring: 213 27% 84%;
+}
+
+@layer base {
+  * { border-color: hsl(var(--border)); }
+  html, body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    -webkit-font-smoothing: antialiased;
+    font-family: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overscroll-behavior-y: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  html { height: 100%; }
+  body { min-height: 100dvh; }
+}
+
+@layer components {
+  .funnel-container {
+    @apply min-h-screen bg-background py-4 px-3 md:py-8 md:px-4;
+    padding-top: calc(env(safe-area-inset-top) + 1rem);
+    padding-bottom: calc(env(safe-area-inset-bottom) + 1rem);
+  }
+  .step-indicator { @apply flex items-center justify-center gap-0 max-w-3xl mx-auto mb-8 md:mb-12; }
+  .step-pill { @apply px-3 py-2 md:px-6 md:py-3 rounded-full text-xs md:text-sm font-medium transition-all duration-300 whitespace-nowrap; }
+  .step-pill-active { @apply bg-primary text-primary-foreground shadow-lg; }
+  .step-pill-inactive { @apply bg-secondary text-muted-foreground; }
+  .step-pill-completed { @apply bg-primary/20 text-primary; }
+  .step-connector { @apply w-4 md:w-8 h-0.5 bg-border; }
+  .step-connector-active { @apply bg-primary; }
+  .form-section { @apply max-w-2xl mx-auto px-1 md:px-0; }
+  .form-title { @apply text-xl md:text-4xl font-bold text-center mb-6 md:mb-10 text-foreground tracking-tight; }
+  .form-label { @apply block text-foreground font-semibold mb-2 text-sm md:text-base; }
+  .form-label-required::after { content: ' *'; @apply text-destructive; }
+  .form-helper { @apply text-xs md:text-sm text-muted-foreground mt-1.5; }
+  .form-input {
+    @apply w-full px-3 py-3 md:px-4 md:py-4 rounded-lg border border-input bg-secondary/50 text-foreground text-base
+           focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200;
+  }
+  .form-select {
+    @apply w-full px-3 py-3 md:px-4 md:py-4 rounded-lg border border-input bg-secondary/50 text-foreground text-base
+           focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200 appearance-none cursor-pointer;
+  }
+  .checkbox-option {
+    @apply flex items-center gap-3 p-3 md:p-4 rounded-md border border-input bg-background
+           hover:border-primary/50 transition-all duration-200 cursor-pointer text-sm md:text-base;
+  }
+  .checkbox-option-selected { @apply border-primary bg-primary text-primary-foreground; }
+  .treatment-card {
+    @apply p-4 md:p-6 rounded-lg border-2 bg-[hsl(var(--treatment-bg))] border-transparent
+           hover:border-primary/30 transition-all duration-300 cursor-pointer;
+  }
+  .treatment-card-selected { @apply border-primary shadow-lg; }
+  .btn-primary {
+    @apply px-6 py-3 md:px-8 md:py-3 bg-primary text-primary-foreground font-semibold rounded-md
+           hover:bg-primary/90 transition-all duration-200 shadow-md hover:shadow-lg
+           disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base w-full md:w-auto;
+  }
+  .btn-secondary {
+    @apply px-6 py-3 md:px-8 md:py-3 bg-secondary text-secondary-foreground font-semibold rounded-md
+           hover:bg-secondary/80 transition-all duration-200 text-sm md:text-base;
+  }
+}
