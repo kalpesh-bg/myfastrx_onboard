@@ -5,9 +5,11 @@ import {
   Lock,
   Info,
   Check,
+  Circle,
+  LockKeyhole,
 } from 'lucide-react';
-import semaglutideBottle from '@/assets/bottle-semaglutide.jpeg';
-import tirzepatideBottle from '@/assets/bottle-tirzepatide.jpeg';
+import semaglutideBottle from '@/assets/bottle-semaglutide.png';
+import tirzepatideBottle from '@/assets/bottle-tirzepatide.png';
 
 type Treatment = 'semaglutide' | 'tirzepatide';
 type PlanId = '1mo' | '3mo' | '6mo' | '12mo';
@@ -165,31 +167,31 @@ const TreatmentStep = ({
   return (
     <div className="w-full pb-44 md:pb-28">
       {/* Eligibility banner */}
-      <div className="flex justify-center mb-4">
-        <div className="inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-full text-sm font-medium shadow-sm">
-          <span className="w-5 h-5 rounded-full bg-white flex items-center justify-center">
-            <Check className="w-3 h-3 text-primary" strokeWidth={3} />
+      <div className="flex justify-center mb-4 md:mb-2">
+        <div className="inline-flex items-center gap-2 bg-blue-600 md:bg-[#e1f8e8] text-white md:text-[#2b6f29] px-2 py-1 md:px-4 md:py-1.5 rounded-full md:rounded-[8px] md:font-bold text-[13px] md:text-[16px] md:text-sm font-medium shadow-sm md:border md:border-border md:border-green">
+          <span className="w-4 h-4 md:w-5 md:h-5 rounded-full bg-white md:bg-transparent flex items-center justify-center">
+            <Check className="w-3 h-3 md:w-5 md:h-5 text-primary md:text-[#2b6f29]" strokeWidth={3} />
           </span>
           You&apos;re eligible to continue
         </div>
       </div>
 
       {/* Headline */}
-      <h1 className="text-center text-3xl md:text-5xl font-bold mb-2 leading-tight">
-        Choose Your<br className="md:hidden" /> <span className="text-primary">Weight Loss</span> Plan
+      <h1 className="text-center text-3xl md:text-5xl font-bold mb-2 md:mb-0 leading-[30px] md:leading-tight">
+        Choose Your<br className="md:hidden" /> <span className="text-blue-600">Medication</span> & Plan
       </h1>
-      <p className="text-center  mb-1 font-medium md:text-[16px] text-[13px] max-w-xl mx-auto px-2">
+      <p className="text-center  mb-1 font-medium md:text-[23px] text-[13px] max-w-xl mx-auto px-2">
         Choose the plan that fits your goals.
       </p>
-      <p className="text-center text-primary mb-6 font-medium md:text-[15px] text-[13px] max-w-xl mx-auto px-2">
+      <p className="text-center text-primary mb-6 font-medium md:text-[18px] text-[13px] max-w-xl mx-auto px-2">
         Provider review, medication and shipping included.
       </p>
 
       {/* Medication selector */}
-      <div className="bg-white rounded-[15px] md:rounded-lg max-w-5xl mx-auto p-4 md:p-6 mb-4 md:mb-6 md:border md:border-border shadow-[0_1px_15px_rgba(0,0,0,0.18)] md:shadow-sm">
+      <div className="bg-white md:bg-[#f5f8fd] rounded-[15px]  max-w-[75rem] mx-auto p-4 md:p-6 md:py-3 mb-4 md:mb-6 md:border md:border-border shadow-[0_1px_15px_rgba(0,0,0,0.18)] md:shadow-none">
         <div className="flex items-center gap-3 mb-3 gap-2 md:mb-4">
-          <div className="w-1.5 h-6 md:w-1.5 md:h-7 bg-primary rounded-full flex-shrink-0"></div>
-          <h3 className="font-medium md:font-bold text-foreground text-base md:text-xl">Choose Your Medication</h3>
+          <div className="w-1.5 h-6 md:w-1.5 md:h-7 bg-primary md:hidden rounded-full flex-shrink-0"></div>
+          <h3 className="font-bold text-foreground text-lg md:text-xl">Choose Your Medication</h3>
           <Info className="w-4 h-4 text-primary" />
         </div>
         <div className="grid grid-cols-2 gap-3">
@@ -198,29 +200,34 @@ const TreatmentStep = ({
             const img = t === 'semaglutide' ? semaglutideBottle : tirzepatideBottle;
             const tag =
               t === 'tirzepatide'
-                ? { label: 'Dual-Action', cls: 'bg-[#e1f8e8] text-green-700' }
-                : { label: 'GLP-1 Option', cls: 'bg-blue-100 text-primary' };
+                ? { label: 'Dual-Action', cls: 'bg-blue-200' }
+                : { label: 'GLP-1 Option', cls: 'bg-blue-200 ' };
             return (
               <button
                 key={t}
                 type="button"
                 onClick={() => handleTreatmentChange(t)}
-                className={`relative bg-white rounded-[10px] md:rounded-md p-4 border-2 text-center transition-all shadow-[0_6px_11px_rgba(0,0,0,0.16)]  ${
-                  selected ? 'border-primary ' : 'border-border'
+                className={`relative rounded-[10px] md:rounded-[13px]  p-4 md:py-3 border-2 text-center transition-all shadow-[0_6px_11px_rgba(0,0,0,0.16)] md:shadow-none ${
+                  selected ? 'border-primary md:bg-[#e6effe] ' : 'border-border bg-white'
                 }`}
               >
                 <div
-                  className={`absolute top-3 left-3 w-4 h-4 md:w-5 md:h-5 rounded-full flex items-center justify-center ${
-                    selected ? 'bg-primary' : 'border-2 border-gray-300'
+                  className={`absolute top-3 md:top-[41%] left-3 md:left-7 w-4 h-4 md:w-5 md:h-5 rounded-full flex items-center justify-center ${
+                    selected ? 'bg-primary' : 'border-2 border-gray-300 md:border-gray-800'
                   }`}
                 >
-                  {selected && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
+                  {selected && 
+                  <>
+                  <Circle className="w-2 h-2 text-white bg-white rounded-full md:block hidden" strokeWidth={3} />
+                  <Check className="w-3 h-3 text-white md:hidden" strokeWidth={3} />
+                  </>
+                  }
                 </div>
-                <div className='flex justify-center items-center md:flex-row flex-col'>
-                  <img src={img} alt={t} className="h-20 md:h-[145px] mx-auto md:m-0 object-contain mb-2" />
+                <div className='flex justify-center items-center md:flex-row flex-col md:gap-[1.5rem]'>
+                  <img src={img} alt={t} className="h-20 md:h-[160px] mx-auto md:m-0 object-contain mb-2 " />
                   <div>
-                    <div className="font-bold text-base md:text-lg capitalize leading-tight mb-2">{t}</div>
-                    <span className={`inline-block text-[11px] md:text-xs px-2.5 py-1 rounded-sm font-medium ${tag.cls}`}>
+                    <div className="font-black md:font-bold text-[17px] md:text-lg capitalize leading-tight mb-2">{t}</div>
+                    <span className={`inline-block text-[11px] md:text-xs px-2.5 md:px-3 md:py-1.5 py-1 rounded-sm font-medium ${tag.cls}`}>
                       {tag.label}
                     </span>
                   </div>
@@ -229,18 +236,18 @@ const TreatmentStep = ({
             );
           })}
         </div>
-        <p className="text-center text-[11px] md:text-sm text-primary mt-4 font-semibold ">
+        <p className="text-center text-[11px] md:text-[15px] text-primary mt-4 font-semibold ">
           Reviewed and prescribed by U.S.-licensed clinicians.
         </p>
       </div>
 
       {/* Plan selection */}
-      <div className="bg-white rounded-[15px] md:rounded-lg max-w-5xl mx-auto p-4 px-3 md:p-6 mb-4 md:border md:border-border shadow-[0_1px_15px_rgba(0,0,0,0.18)] md:shadow-sm">
+      <div className="bg-white md:bg-[#f5f8fd] rounded-[15px]  max-w-[75rem] mx-auto p-4 px-3 md:p-6 md:py-4 mb-4 md:border md:border-border shadow-[0_1px_15px_rgba(0,0,0,0.18)] md:shadow-none">
         <div className="flex items-center gap-3 mb-3 gap-2 md:mb-4">
-          <div className="w-1.5 h-6 md:w-1.5 md:h-7 bg-primary rounded-full flex-shrink-0"></div>
-          <h3 className="font-medium md:font-bold text-foreground text-base md:text-xl">Choose Your Plan</h3>
+          <div className="w-1.5 h-6 md:w-1.5 md:h-7 md:hidden bg-primary rounded-full flex-shrink-0"></div>
+          <h3 className="font-bold text-foreground text-lg md:text-xl">Choose Your Plan</h3>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-3">
           {plans.map((plan) => {
             const selected = planId === plan.id;
             const isFirstMonthDeal = !!plan.firstMonthOff;
@@ -258,81 +265,217 @@ const TreatmentStep = ({
                 key={plan.id}
                 type="button"
                 onClick={() => handlePlanChange(plan.id)}
-                className={`relative text-left rounded-[10px] md:rounded-md border-2 p-3 md:p-4 transition-all shadow-[0_6px_11px_rgba(0,0,0,0.16)] md:shadow-sm  ${
+                className={`relative text-left transition-all ${
                   selected
-                    ? 'border-primary bg-blue-50/50'
-                    : 'border-border hover:border-gray-300 bg-white'
+                    ? "border-primary"
+                    : "border-border hover:border-gray-300"
                 }`}
               >
-                {/* Header row — always same height across all cards */}
-                <div className='flex items-center md:items-start justify-between flex-row md:flex-col md:gap-2 '>
-                  <div>
-                    <div className="flex items-center justify-between gap-3 md:mb-3 min-h-7 flex-row md:flex-col md:items-start">
-                      <div className="flex items-center  gap-2.5 min-w-0">
+                {/* ================= MOBILE (UNCHANGED) ================= */}
+                <div
+                  className={`md:hidden relative rounded-[10px] border-2 p-3 shadow-[0_6px_11px_rgba(0,0,0,0.16)] ${
+                    selected
+                      ? "border-primary bg-blue-50/50"
+                      : "border-border bg-white "
+                  }`}
+                >
+                  {/* Header row */}
+                  <div className="flex items-center md:items-start justify-between flex-row md:flex-col md:gap-2">
+                    <div>
+                      {/* Plan Name + Badge */}
+                      <div className="flex items-center justify-between gap-3 md:mb-3 min-h-7 flex-row md:flex-col md:items-start">
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <span
+                            className={`w-4 h-4 md:w-5 md:h-5 rounded-full flex items-center justify-center shrink-0 ${
+                              selected
+                                ? "bg-primary"
+                                : "border-2 border-gray-300 md:border-gray-800"
+                            }`}
+                          >
+                            {selected && (
+                              
+                              <Check
+                                className="w-3 h-3 text-white"
+                                strokeWidth={3}
+                              />
+                              
+                              
+                            )}
+                          </span>
+
+                          <div className="flex flex-col">
+                            <span className="font-bold text-sm">{plan.label}</span>
+
+                            {/* Monthly Offer */}
+                            {isFirstMonthDeal && (
+                              <span className="hidden md:inline-flex mt-1 bg-amber-100 text-amber-800 border border-amber-500 text-[10px] font-bold px-2 py-1 rounded-md w-fit">
+                                MY50 FIRST-MONTH OFFER
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Popular / Best Badge */}
+                        {(plan.badge === "popular" || plan.badge === "best") && (
+                          <span
+                            className={`hidden md:inline-flex absolute -top-4 left-1/2 -translate-x-1/2 text-[10px] font-bold px-3 py-1 rounded-md whitespace-nowrap ${
+                              plan.badge === "popular"
+                                ? "bg-primary text-white"
+                                : "bg-green-600 text-white"
+                            }`}
+                          >
+                            {plan.badge === "popular"
+                              ? "Most Popular"
+                              : "Best Value"}
+                          </span>
+                        )}
+
+                        {/* Mobile Badge (existing position) */}
                         <span
-                          className={`w-4 h-4 md:w-5 md:h-5 rounded-full flex items-center justify-center shrink-0 ${
-                            selected ? 'bg-primary' : 'border-2 border-gray-300'
+                          className={`md:hidden shrink-0 text-[9px] font-bold px-2 py-1 rounded-sm whitespace-nowrap absolute left-[133px] ${
+                            planBadge ? planBadge.cls : "invisible"
                           }`}
                         >
-                          {selected && <Check className="w-3 h-3  text-white" strokeWidth={3} />}
+                          {planBadge?.text ?? "placeholder"}
                         </span>
-                        <span className="font-medium text-sm">{plan.label}</span>
                       </div>
-                      {/* Badge slot — always rendered so header row height is identical */}
-                      <span
-                        className={`shrink-0 text-[9px] md:text-[10px] font-bold px-2 py-1 rounded-sm md:rounded-md whitespace-nowrap absolute left-[133px] md:static md:left-auto md:ml-7 ${
-                          planBadge ? planBadge.cls : 'invisible'
-                        }`}
-                      >
-                        {planBadge?.text ?? 'placeholder'}
-                      </span>
-                    </div>
-                    {/* Pricing row — identical structure and font size on every card */}
-                    <div className="flex items-end justify-between gap-3 pl-7">
-                      <div className="min-h-11 flex flex-col justify-end">
-                        <div className="flex items-baseline gap-1">
-                          <span className="text-[26px] md:text-2xl font-bold text-foreground">{fmt(plan.monthly)}</span>
-                          <span className="text-xs md:text-sm text-foreground md:text-muted-foreground">
-                            {isFirstMonthDeal ? 'first month' : '/mo'}
-                          </span>
+
+                      {/* Pricing */}
+                      <div className="flex items-end justify-between gap-3 pl-7">
+                        <div className="min-h-11 flex flex-col justify-end">
+                          <div className="flex items-baseline gap-1">
+                            <span className="text-[30px] md:text-2xl font-black md:font-bold text-foreground">
+                              {fmt(plan.monthly)}
+                            </span>
+
+                            <span className="text-xs md:text-sm text-foreground md:text-muted-foreground">
+                              {isFirstMonthDeal ? "first month" : "/mo"}
+                            </span>
+                          </div>
+
+                          <p className="text-[11px] md:text-xs text-foreground md:text-muted-foreground mt-1">
+                            {isFirstMonthDeal
+                              ? `Then $${plan.ongoingMonthly}/mo`
+                              : `${fmt(plan.total)} due today`}
+                          </p>
                         </div>
-                        <p className="text-[11px] md:text-xs text-foreground md:text-muted-foreground mt-1">
-                          {isFirstMonthDeal
-                            ? `Then $${plan.ongoingMonthly}/mo`
-                            : `${fmt(plan.total)} due today`}
-                        </p>
                       </div>
                     </div>
-                  </div>
-                  <div className='md:pl-7'>
-                    <div className="bg-[#e1f8e8] text-green-700 border border-green-700 text-xs font-medium px-2.5 py-1.5 rounded-md shrink-0">
+
+                    {/* Save Badge */}
+                    <div className="md:pl-7">
+                      <div className="bg-[#e1f8e8] text-green-700 border border-green-700 text-xs font-medium px-2.5 py-1.5 rounded-md shrink-0">
                         Save {fmt(plan.savings)}
                       </div>
+                    </div>
                   </div>
                 </div>
 
-                
+                {/* ================= DESKTOP (NEW DESIGN) ================= */}
+                <div
+                  className={`hidden md:flex relative rounded-2xl border-2 bg-white p-5 pt-7 h-[210px]  flex-col justify-between ${
+                    selected
+                      ? "border-blue-600 shadow-md md:bg-[#e6effe]"
+                      : "border-border "
+                  }`}
+                >
+                  {/* Floating badge */}
+                  {(plan.badge === "popular" || plan.badge === "best") && (
+                    <div
+                      className={`absolute -top-7 left-1/2 -translate-x-1/2 px-5 py-2 rounded-md text-xs font-bold shadow-md ${
+                        plan.badge === "popular"
+                          ? "bg-blue-600 text-white"
+                          : "bg-green-600 text-white"
+                      }`}
+                    >
+                      {plan.badge === "popular"
+                        ? "Most Popular"
+                        : "Best Value"}
+                    </div>
+                  )}
+
+                  {/* Header */}
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <div className="flex items-center gap-3">
+                        <span
+                          className={`w-5 h-5 rounded-full flex items-center justify-center ${
+                            selected
+                              ? "bg-primary"
+                              : "border-2 border-gray-400"
+                          }`}
+                        >
+                          {selected && (
+                            <circle
+                              className="w-2 h-2 text-white bg-white rounded-full"
+                              strokeWidth={3}
+                            />
+                          )}
+                        </span>
+
+                        <span className="font-bold text-lg">
+                          {plan.label}
+                        </span>
+                      </div>
+
+                      {/* Monthly Offer ONLY */}
+                      {isFirstMonthDeal && (
+                        <div className="mt-3">
+                          <span className="inline-flex rounded bg-green-100 border border-green-300 text-green-700 font-bold text-[11px] px-2 py-1">
+                            MY50 FIRST-MONTH OFFER
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Save badge */}
+                    <div className="bg-green-100 text-green-700 border border-green-300 rounded-md px-2 py-1 text-xs font-semibold absolute right-[1rem] top-[38px]">
+                      Save {fmt(plan.savings)}
+                    </div>
+                  </div>
+
+                  {/* Price */}
+                  <div className="mt-1">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-[47px] font-black leading-[60px]">
+                        {fmt(plan.monthly)}
+                      </span>
+
+                      <span className=" text-lg text-gray-600">
+                        {isFirstMonthDeal
+                          ? "first month"
+                          : "/mo"}
+                      </span>
+                    </div>
+
+                    <p className="mt-2 text-sm text-gray-600">
+                      {isFirstMonthDeal
+                        ? `Then $${plan.ongoingMonthly}/mo`
+                        : `${fmt(plan.total)} due today`}
+                    </p>
+                  </div>
+                </div>
               </button>
             );
           })}
         </div>
-        <div className="max-w-5xl mx-auto  flex md:hidden  items-center justify-center gap-2 text-[11px] font-semibold  md:text-sm text-primary mt-3 px-1">
-          <Info className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+        <div className="max-w-[75rem] md:bg-white md:p-3 md:rounded-[11px] md:border md:border-border mx-auto  flex  items-center justify-center md:justify-start gap-2 text-[11px] font-semibold  md:text-[15px] text-primary mt-3 px-1">
+          <Info className="w-4 h-4 md:w-6 md:h-6 text-primary shrink-0 mt-0.5" />
           <p>
-            <span className="">Important dosage note:</span>{' '}
+            <span className="md:font-black text-blue-600">Important dosage note:</span>{' '}
             Higher doses may require documentation.
           </p>
         </div>
       </div>
 
       {/* Dosage note */}
-      <div className="max-w-5xl mx-auto hidden md:flex items-start gap-2 text-xs md:text-sm text-muted-foreground mb-6 px-1">
+      {/* <div className="max-w-5xl mx-auto hidden md:flex items-start gap-2 text-xs md:text-sm text-muted-foreground mb-6 px-1">
         <Info className="w-4 h-4 text-primary shrink-0 mt-0.5" />
         <p>
           <span className="font-semibold text-foreground">Important dosage note:</span>{' '}
           Higher doses may require documentation.
         </p>
-      </div>
+      </div> */}
 
       <div className="flex justify-center mb-28 md:mb-6">
         <button type="button" onClick={onBack} className="btn-secondary">
@@ -341,24 +484,24 @@ const TreatmentStep = ({
       </div>
 
       {/* Sticky checkout bar */}
-      <div className="fixed bottom-3 left-3 right-3 md:bottom-4 md:left-4 md:right-4 bg-white border border-border rounded-lg shadow-[0_-8px_24px_rgba(0,0,0,0.12),0_-20px_56px_rgba(0,0,0,0.20)] z-50">
-        <div className="max-w-3xl mx-auto px-4 py-3 md:py-4">
-          <div className="flex items-center justify-center gap-0 mb-3">
-            <div className="flex-1 text-center pr-4">
-              <div className="text-[11px] md:text-muted-foreground md:uppercase tracking-wide mb-0.5">Selected Plan</div>
-              <div className="font-bold text-sm md:text-base">{selectedPlan.label}</div>
+      <div className="fixed bottom-2 left-3 right-3 md:bottom-4 md:left-4 md:right-4 bg-white border border-border rounded-lg shadow-[0_2px_6px_rgba(0,0,0,0.30)] md:shadow-[0_10px_14px_rgba(0,0,0,0.30)] z-50 max-w-[81rem] mx-auto">
+        <div className="w-full md:w-[90%] mx-auto px-4 py-1 pb-0 md:py-3  md:py-4 md:flex justify-between">
+          <div className="flex items-center justify-center gap-0  md:w-[65%] mb-[4px] md:mb-0">
+            <div className="flex-1 text-start pr-4 pl-5 md:pl-0">
+              <div className="text-[11px] font-semibold  md:text-sm tracking-wide md:mb-0.5">Selected Plan</div>
+              <div className="font-bold text-sm md:text-xl">{selectedPlan.label}</div>
             </div>
-            <div className="w-px h-10 bg-primary" />
-            <div className="flex-1 text-center pl-4">
-              <div className="text-[11px] md:text-muted-foreground md:uppercase tracking-wide mb-0.5">Due Today</div>
-              <div className="font-bold md:text-primary text-lg md:text-xl">{fmt(dueToday)}</div>
+            <div className="w-[1px] h-6 md:h-12 md:w-[2px]  bg-primary md:bg-gray-300" />
+            <div className="flex-1 text-start pl-6 md:pl-[16%]">
+              <div className="text-[11px] font-semibold  md:text-sm tracking-wide md:mb-0.5">Due Today</div>
+              <div className="font-bold  text-sm md:text-xl">{fmt(dueToday)}</div>
             </div>
           </div>
           <button
             onClick={handleCheckout}
-            className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 px-4 rounded-md flex items-center justify-center gap-2 text-sm md:text-base"
+            className="w-full md:w-[35%] bg-primary hover:bg-primary/90 text-white font-bold md:font-semibold py-2 md:py-0 px-4 rounded-[4px] md:rounded-md flex items-center justify-center gap-2 text-sm md:text-xl"
           >
-            <Lock className="w-4 h-4" />
+            <LockKeyhole className="w-4 h-4 md:w-6 md:h-6" />
             Continue Secure Checkout
           </button>
         </div>

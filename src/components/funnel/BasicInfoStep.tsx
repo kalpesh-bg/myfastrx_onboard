@@ -270,7 +270,7 @@ const BasicInfoStep = ({ data, onUpdate, onNext, onFieldBlur }: BasicInfoStepPro
             SMS Terms and Conditions
           </a>
         </p>
-      <div className="mt-8 flex justify-center">
+      <div className="mt-8 flex justify-center mb-3">
         <button type="submit" className="btn-primary w-full md:w-auto">
           Next
         </button>

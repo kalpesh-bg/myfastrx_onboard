@@ -238,9 +238,9 @@ const WeightLossFunnel = () => {
   return (
     <>
       {/* <ExitIntentDialog isComplete={isComplete} /> */}
-      <div className="funnel-container bg-[linear-gradient(to_right,_#e2f3ff_0%,_white_50%,_white_50%,_#e2f3ff_100%)]">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-6 md:mb-8">
+      <div className="funnel-container bg-white md:bg-gradient-to-b from-[#16335f] via-[#3a5d95] to-[#587fc0] bg-[linear-gradient(to_right,_#f0f9ff_0%,_white_60%,_white_40%,_#f0f9ff_100%)]">
+        <div className="max-w-7xl mx-auto md:bg-white rounded-[10px] md:shadow-[0_0px_49px_rgba(0,0,0,0.60)] md:border md:border-border md:border-black">
+          <div className="text-center mb-0 md:mb-1">
             <img src={logoImage} alt="MyFastRx" className="h-12 md:h-20 mx-auto" />
           </div>
 

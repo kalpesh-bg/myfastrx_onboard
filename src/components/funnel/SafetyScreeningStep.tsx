@@ -129,7 +129,7 @@ const SafetyScreeningStep = ({ data, onUpdate, onNext, onBack, onFieldBlur }: Sa
         <p className="text-destructive text-center mt-4">{error}</p>
       )}
 
-      <div className="mt-8 flex justify-center gap-4">
+      <div className="mt-8 flex justify-center gap-4 mb-3">
         <button type="button" onClick={onBack} className="btn-secondary">
           Back
         </button>

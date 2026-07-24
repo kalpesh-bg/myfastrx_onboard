@@ -290,7 +290,7 @@ const HealthBasicsStep = ({ data, onUpdate, onNext, onBack, onFieldBlur }) => {
 
 
       {/* BUTTONS */}
-      <div ref={buttonsRef} className="flex justify-center gap-4">
+      <div ref={buttonsRef} className="flex justify-center gap-4 mb-3">
         <button type="button" onClick={onBack} className="btn-secondary">
           Back
         </button>
